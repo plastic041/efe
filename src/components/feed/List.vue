@@ -35,7 +35,6 @@ async function handleSelect(feed: { url: string; lastFetchedAt: string }) {
     const text = await res.text();
     const parsed = parseFeed(text);
 
-    await db.execute("BEGIN;")
     await Promise.all(
       parsed.items.map(item => {
         db.execute(
@@ -48,7 +47,6 @@ async function handleSelect(feed: { url: string; lastFetchedAt: string }) {
 
       })
     )
-    await db.execute("COMMIT;")
 
     client.invalidateQueries({
       queryKey: ["db", "articles", feed.url],

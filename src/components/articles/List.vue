@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useArticles } from "../../utils/db.ts";
+import DOMPurify from "dompurify"
 
 const props = defineProps<{
   feedUrl: string;
@@ -15,9 +16,9 @@ const { data: articles } = useArticles(() => props.feedUrl);
         {{ article.title }}
       </a>
 
-      <p>
-        {{ article.description }}
-      </p>
+      <div class="prose" v-if="article.description"
+        v-html="DOMPurify.sanitize(article.description, { USE_PROFILES: { html: true } })" /> -->
+
       <!-- 
       <div class="prose" v-if="article.content"
         v-html="DOMPurify.sanitize(article.content, { USE_PROFILES: { html: true } })" /> -->
